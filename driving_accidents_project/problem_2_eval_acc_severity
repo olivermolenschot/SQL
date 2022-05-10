@@ -1,0 +1,13 @@
+// merging both tables then making the calculation.
+
+
+SELECT acc_severity, veh_type
+FROM 
+	(
+    SELECT accident.Accident_Severity AS acc_severity,
+    vehicles.Vehicle_Type AS veh_type
+    FROM accident
+    JOIN vehicles ON accident.Accident_Index=vehicles.Accident_Index
+    ) AS T
+ORDER BY veh_type
+;
