@@ -1,0 +1,14 @@
+// merging both tables then making the calculation.
+
+
+SELECT AVG(acc_severity), veh_type
+FROM 
+	(
+    SELECT accident.Accident_Severity AS acc_severity,
+    vehicles.Vehicle_Type AS veh_type
+    FROM accident
+    JOIN vehicles ON accident.Accident_Index=vehicles.Accident_Index
+    ) AS T
+GROUP BY veh_type
+ORDER BY veh_type
+;
