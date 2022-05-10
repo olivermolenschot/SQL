@@ -1,0 +1,22 @@
+SET @rowindex := -1;
+
+SELECT 
+	AVG(a.severity) as Median
+FROM 
+	(SELECT @rowindex:=@rowindex +1 AS rowindex, 
+     accident.Accident_Severity AS severity
+     FROM accident 
+     WHERE accident.Accident_Index IN (
+        SELECT vehicles.Accident_Index
+        FROM vehicles
+        WHERE Vehicle_Type IN (
+            SELECT vehicle_types.Vehicle_type_index 
+            FROM vehicle_types
+            WHERE label LIKE '%otorcycle%')
+        )
+       
+     ORDER BY accident.Accident_Severity) AS a
+WHERE
+a.rowindex IN (FLOOR(@rowindex / 2), CEIL(@rowindex / 2));
+  
+  
