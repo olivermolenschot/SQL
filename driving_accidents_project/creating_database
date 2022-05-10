@@ -1,0 +1,103 @@
+
+CREATE TABLE accident (
+  	Event_number INT(6) PRIMARY KEY,
+	Accident_Index VARCHAR(20),
+  	Location_Easting_OSGR DOUBLE(10,2),
+	Location_Northing_OSGR DOUBLE(10,2),
+  	Longitude DOUBLE(11,8),
+  	Latitude DOUBLE(11,8),
+	Police_Force INT (3),
+	Accident_Severity INT(1),
+  	Number_of_Vehicles INT(2),
+  	Number_of_Casualties INT(2),
+  	Date_column DATE,
+  	Day_of_Week INT(1),
+  	time_column TIME(2),
+  	Local_Authority_District INT(3),
+  	Local_Authority_Highway VARCHAR(20),
+  	first_Road_Class INT(1),
+  	first_Road_Number INT(4),
+  	Road_Type INT(1),
+  	Speed_limit INT(2),
+  	Junction_Detail INT(1),
+  	Junction_Control INT(1),
+  	second_Road_Class INT(1),
+  	second_Road_Number INT(4),
+  	Pedestrian_Crossing_Human_Control INT(1),
+  	Pedestrian_Crossing_Physical_Facilities INT(1),
+  	Light_Conditions INT(1),
+  	Weather_Conditions INT(1),
+  	Road_Surface_Conditions INT(1),
+  	Special_Conditions_at_Site int(1),
+  	Carriageway_Hazards INT(1),
+  	Urban_or_Rural_Area INT(1),
+  	Did_Police_Officer_Attend_Scene_of_Accident INT(1),
+  	LSOA_of_Accident_Location VARCHAR(20)
+);
+    	
+select * from accident
+
+LOAD DATA INFILE "C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/accidents-dataset-uk-updated.csv"
+	INTO TABLE accident
+    FIELDS TERMINATED BY ','
+    LINES TERMINATED BY '\n'		
+	IGNORE 1 ROWS;  	
+ 
+SHOW VARIABLES LIKE 'secure_file_priv';
+  	
+    
+SELECT DISTINCT Police_Force
+FROM accident
+
+CREATE TABLE vehicles (
+	key_index INT(8) PRIMARY KEY,	
+  	Accident_Index VARCHAR(25),
+  	Vehicle_Reference INT(2),
+  	Vehicle_Type INT(2),
+  	Towing_and_Articulation INT(1),
+  	Vehicle_Manoeuvre INT(2),
+  	Vehicle_Location_Restricted_Lane INT(1),
+  	Junction_Location INT(1),
+  	Skidding_and_Overturning INT(1),
+  	Hit_Object_in_Carriageway INT(2),
+  	Vehicle_Leaving_Carriageway INT(1),
+  	Hit_Object_off_Carriageway INT(2),
+  	first_Point_of_Impact INT(1),
+  	Was_Vehicle_Left_Hand_Drive INT(1),
+  	Journey_Purpose_of_Driver INT(1),
+  	Sex_of_Driver INT(1),
+  	Age_of_Driver INT(2),
+  	Age_Band_of_Driver INT(2),
+  	Engine_Capacity_CC INT(5),
+  	Propulsion_Code INT(2),
+  	Age_of_Vehicle INT(3),
+  	Driver_IMD_Decile INT,
+  	Driver_Home_Area_Type INT(1),
+  	Vehicle_IMD_Decile INT
+);
+  	
+LOAD DATA INFILE "C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/vehicles-dataset-uk.csv"
+	INTO TABLE vehicles
+    FIELDS TERMINATED BY ','
+    LINES TERMINATED BY '\n'		
+	IGNORE 1 ROWS;
+
+CREATE TABLE vehicle_types (
+	Vehicle_type_index INT(2) PRIMARY KEY,
+  	code INT,
+  	label VARCHAR(50)
+  	
+);
+
+
+LOAD DATA INFILE "C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/vehicle-types-dataset-uk.csv"
+	INTO TABLE vehicle_types
+    FIELDS TERMINATED BY ','
+    LINES TERMINATED BY '\n'		
+	IGNORE 1 ROWS;
+
+
+// DROP TABLE vehicle_types;
+  	
+  	
+  	
