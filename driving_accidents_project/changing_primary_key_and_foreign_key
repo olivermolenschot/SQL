@@ -1,0 +1,70 @@
+SELECT accident.Accident_Index, count(*) AS CNT
+FROM accident
+GROUP BY accident.Accident_Index
+HAVING COUNT(*) > 1;
+
+SELECT vehicles.Accident_Index, count(*) AS CNT
+FROM vehicles
+GROUP BY vehicles.Accident_Index
+HAVING COUNT(*) > 1;
+
+
+DELETE FROM vehicles
+	WHERE key_index NOT IN
+    (
+      SELECT max_index
+      FROM 
+      (
+      	SELECT MAX(key_index)  as max_index
+      	FROM vehicles
+      	GROUP BY vehicles.Accident_Index
+      ) as t
+    );
+
+// code below alters the primary key
+
+ALTER TABLE vehicles DROP PRIMARY KEY, ADD PRIMARY KEY(Accident_Index);
+DESCRIBE vehicles;
+
+// code below creates foreing key in accident table
+
+ALTER TABLE accident
+ADD FOREIGN KEY (Accident_Index) 
+REFERENCES vehicles(Accident_Index)
+ON DELETE SET NULL
+ON UPDATE SET NULL;
+
+// code above does not work since there are values in accident table that 
+// cannot be matched in the vehicles table. Solution is to drop those values.
+
+// Here I will try to drop those values aforementioned
+
+SELECT accident.Accident_Index, COUNT(*) AS CNT
+FROM accident
+WHERE accident.Accident_Index IN 
+	(
+	SELECT vehicles.Accident_Index
+	FROM vehicles
+    );
+    
+DELETE FROM accident
+WHERE accident.Accident_Index NOT IN 
+	(
+	SELECT vehicles.Accident_Index
+	FROM vehicles
+    );
+
+SELECT accident.Accident_Index 
+FROM accident;
+ 
+// the code presented above now works since there are no missing values
+// matching to the foreign key. Here is the code once again:
+
+ALTER TABLE accident
+ADD FOREIGN KEY (Accident_Index) 
+REFERENCES vehicles(Accident_Index)
+ON DELETE SET NULL
+ON UPDATE SET NULL;
+
+DESCRIBE accident;
+DESCRIBE vehicles;
